@@ -3,64 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hydra Verificação</title>
+<title>Hydra Verification</title>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #1f2937, #020617);
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-/* CARD PRINCIPAL */
-.container {
-    background: #0f172a;
-    padding: 30px;
+/* CARD */
+.card {
+    background: #111827;
     border-radius: 20px;
+    padding: 40px;
     width: 90%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
     box-shadow: 0 0 40px rgba(0,255,255,0.2);
-    animation: aparecer 0.8s ease;
 }
 
 /* TÍTULO */
 .title {
+    font-size: 26px;
     color: #00ffff;
-    font-size: 28px;
     margin-bottom: 10px;
 }
 
-/* TEXTO */
-.desc {
-    color: #cbd5f5;
+/* SUB */
+.sub {
     font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 20px;
 }
 
-/* INPUT */
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 20px;
-    border-radius: 10px;
-    border: none;
-    background: #020617;
-    color: white;
-    font-size: 16px;
+/* STATUS */
+.status {
+    color: #22c55e;
+    font-size: 14px;
+    margin-bottom: 30px;
 }
 
 /* BOTÃO */
 button {
     width: 100%;
-    margin-top: 15px;
-    padding: 14px;
+    padding: 15px;
     border: none;
     border-radius: 10px;
     background: #00ffff;
+    color: black;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
@@ -70,41 +65,25 @@ button:hover {
     background: #00cccc;
 }
 
+/* INPUT (ESCONDIDO) */
+.input-area {
+    display: none;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
 /* SUCESSO */
 .success {
     display: none;
     margin-top: 20px;
-    background: #022c22;
-    padding: 15px;
-    border-radius: 10px;
-    color: #4ade80;
-}
-
-/* BOTÃO DISCORD */
-.discord-btn {
-    display: none;
-    margin-top: 10px;
-    background: #5865F2;
-    color: white;
-}
-
-/* ANIMAÇÃO */
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* RODAPÉ */
-.footer {
-    margin-top: 15px;
-    font-size: 12px;
-    color: #94a3b8;
+    color: #22c55e;
 }
 </style>
 
@@ -112,49 +91,41 @@ button:hover {
 
 <body>
 
-<div class="container">
+<div class="card">
 
-    <div class="title">🔐 Hydra</div>
+    <div class="title">Hydra</div>
+    <div class="sub">Conta conectada com sucesso!</div>
 
-    <div class="desc">
-        Insira seu código de verificação abaixo para liberar acesso ao servidor.
+    <div class="status">● Verificação disponível</div>
+
+    <button onclick="abrirInput()">Verificar</button>
+
+    <div class="input-area" id="area">
+        <input type="text" id="codigo" placeholder="Digite seu código">
+        <button onclick="verificarCodigo()">Confirmar Código</button>
     </div>
 
-    <input id="codigo" type="text" placeholder="Digite seu código aqui">
-
-    <button onclick="verificar()">Verificar</button>
-
-    <div class="success" id="sucesso">
-        ✅ Conta verificada com sucesso!<br>
-        Agora você já pode voltar ao Discord.
-    </div>
-
-    <button class="discord-btn" id="voltar" onclick="voltarDiscord()">
-        🔗 Voltar ao Discord
-    </button>
-
-    <div class="footer">
-        Hydra Security System © 2026
+    <div class="success" id="ok">
+        ✅ Verificação concluída!<br>
+        Pode voltar ao Discord.
     </div>
 
 </div>
 
 <script>
-function verificar() {
+function abrirInput() {
+    document.getElementById("area").style.display = "block";
+}
+
+function verificarCodigo() {
     let codigo = document.getElementById("codigo").value;
 
     if (codigo.length < 4) {
-        alert("Código inválido!");
+        alert("Código inválido");
         return;
     }
 
-    document.getElementById("sucesso").style.display = "block";
-    document.getElementById("voltar").style.display = "block";
-}
-
-// botão voltar
-function voltarDiscord() {
-    window.location.href = "https://discord.com";
+    document.getElementById("ok").style.display = "block";
 }
 </script>
 
