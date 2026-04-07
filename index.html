@@ -3,87 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hydra Verification</title>
+<title>Hydra Verificação</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #020617);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: radial-gradient(circle, #7f1d1d, #020617);
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* CARD */
-.card {
-    background: #111827;
+/* FUNDO COM EFEITO */
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255,0,0,0.1),
+        rgba(255,0,0,0.1) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+    z-index: 0;
+}
+
+/* CARD PRINCIPAL */
+.container {
+    position: relative;
+    z-index: 1;
+    background: #0f172a;
+    padding: 30px;
     border-radius: 20px;
-    padding: 40px;
     width: 90%;
-    max-width: 420px;
+    max-width: 380px;
     text-align: center;
-    box-shadow: 0 0 40px rgba(0,255,255,0.2);
+    box-shadow: 0 0 40px rgba(255,0,0,0.4);
+}
+
+/* LOGO */
+.logo {
+    font-size: 40px;
+    color: #ff4d4d;
+    margin-bottom: 10px;
 }
 
 /* TÍTULO */
 .title {
-    font-size: 26px;
-    color: #00ffff;
-    margin-bottom: 10px;
+    color: #ff4d4d;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 /* SUB */
 .sub {
-    font-size: 14px;
     color: #9ca3af;
+    font-size: 13px;
     margin-bottom: 20px;
 }
 
-/* STATUS */
-.status {
-    color: #22c55e;
-    font-size: 14px;
-    margin-bottom: 30px;
+/* CARD INTERNO */
+.inner-card {
+    background: #020617;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #ff4d4d30;
+}
+
+/* CHECK */
+.check {
+    width: 60px;
+    height: 60px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* TEXTO */
+.inner-title {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.inner-desc {
+    color: #9ca3af;
+    font-size: 13px;
 }
 
 /* BOTÃO */
-button {
+.btn {
+    margin-top: 20px;
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     border: none;
     border-radius: 10px;
-    background: #00ffff;
-    color: black;
+    background: #5865F2;
+    color: white;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-button:hover {
-    background: #00cccc;
-}
-
-/* INPUT (ESCONDIDO) */
-.input-area {
-    display: none;
+/* CAIXAS */
+.features {
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
 }
 
-input {
-    width: 100%;
-    padding: 12px;
+.box {
+    background: #020617;
+    padding: 15px;
     border-radius: 10px;
-    border: none;
-    margin-top: 10px;
+    width: 45%;
+    color: #ff4d4d;
+    font-size: 13px;
 }
 
-/* SUCESSO */
-.success {
-    display: none;
-    margin-top: 20px;
-    color: #22c55e;
+/* FOOTER */
+.footer {
+    margin-top: 15px;
+    font-size: 11px;
+    color: #6b7280;
 }
 </style>
 
@@ -91,41 +141,44 @@ input {
 
 <body>
 
-<div class="card">
+<div class="container">
 
-    <div class="title">Hydra</div>
-    <div class="sub">Conta conectada com sucesso!</div>
+    <div class="logo">💎</div>
 
-    <div class="status">● Verificação disponível</div>
+    <div class="title">HYDRA SYSTEM</div>
+    <div class="sub">Sua verificação foi concluída com sucesso!</div>
 
-    <button onclick="abrirInput()">Verificar</button>
+    <div class="inner-card">
 
-    <div class="input-area" id="area">
-        <input type="text" id="codigo" placeholder="Digite seu código">
-        <button onclick="verificarCodigo()">Confirmar Código</button>
+        <div class="check">✔</div>
+
+        <div class="inner-title">Conta Verificada</div>
+
+        <div class="inner-desc">
+            Parabéns! Sua conta foi verificada com sucesso.<br>
+            Agora você tem acesso completo ao servidor Hydra no Discord.
+        </div>
+
     </div>
 
-    <div class="success" id="ok">
-        ✅ Verificação concluída!<br>
-        Pode voltar ao Discord.
+    <button class="btn" onclick="voltarDiscord()">
+        🔗 Voltar ao Discord
+    </button>
+
+    <div class="features">
+        <div class="box">🔒 Segurança</div>
+        <div class="box">🚀 Rápido</div>
+    </div>
+
+    <div class="footer">
+        © 2026 HYDRA SYSTEM. Todos os direitos reservados.
     </div>
 
 </div>
 
 <script>
-function abrirInput() {
-    document.getElementById("area").style.display = "block";
-}
-
-function verificarCodigo() {
-    let codigo = document.getElementById("codigo").value;
-
-    if (codigo.length < 4) {
-        alert("Código inválido");
-        return;
-    }
-
-    document.getElementById("ok").style.display = "block";
+function voltarDiscord() {
+    window.location.href = "https://discord.com";
 }
 </script>
 
