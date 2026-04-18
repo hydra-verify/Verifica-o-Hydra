@@ -1,189 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hydra Verificação</title>
+  <meta charset="UTF-8">
+  <title>Hydra Verificação</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1a0000, #300000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle, #7f1d1d, #020617);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .card {
+      background: #0b1220;
+      padding: 25px;
+      border-radius: 15px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
 
-/* FUNDO COM EFEITO */
-body::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        45deg,
-        rgba(255,0,0,0.1),
-        rgba(255,0,0,0.1) 10px,
-        transparent 10px,
-        transparent 20px
-    );
-    z-index: 0;
-}
+    h2 {
+      margin-bottom: 10px;
+    }
 
-/* CARD PRINCIPAL */
-.container {
-    position: relative;
-    z-index: 1;
-    background: #0f172a;
-    padding: 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 0 40px rgba(255,0,0,0.4);
-}
+    p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
-/* LOGO */
-.logo {
-    font-size: 40px;
-    color: #ff4d4d;
-    margin-bottom: 10px;
-}
+    .code-box {
+      display: flex;
+      margin: 15px 0;
+      gap: 8px;
+    }
 
-/* TÍTULO */
-.title {
-    color: #ff4d4d;
-    font-size: 22px;
-    font-weight: bold;
-}
+    .code-box input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      text-align: center;
+      font-weight: bold;
+    }
 
-/* SUB */
-.sub {
-    color: #9ca3af;
-    font-size: 13px;
-    margin-bottom: 20px;
-}
+    .code-box button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #5865F2;
+      color: white;
+      cursor: pointer;
+    }
 
-/* CARD INTERNO */
-.inner-card {
-    background: #020617;
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid #ff4d4d30;
-}
+    .code-box button:hover {
+      background: #4752c4;
+    }
 
-/* CHECK */
-.check {
-    width: 60px;
-    height: 60px;
-    background: #22c55e;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    font-size: 30px;
-    margin-bottom: 10px;
-}
+    .btn {
+      display: block;
+      margin-top: 15px;
+      padding: 12px;
+      background: #5865F2;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
 
-/* TEXTO */
-.inner-title {
-    color: white;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
+    .btn:hover {
+      background: #4752c4;
+    }
 
-.inner-desc {
-    color: #9ca3af;
-    font-size: 13px;
-}
-
-/* BOTÃO */
-.btn {
-    margin-top: 20px;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #5865F2;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* CAIXAS */
-.features {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.box {
-    background: #020617;
-    padding: 15px;
-    border-radius: 10px;
-    width: 45%;
-    color: #ff4d4d;
-    font-size: 13px;
-}
-
-/* FOOTER */
-.footer {
-    margin-top: 15px;
-    font-size: 11px;
-    color: #6b7280;
-}
-</style>
-
+    .instrucoes {
+      font-size: 13px;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
+  <div class="card">
+    <h2>🔐 Verificação Discord</h2>
 
-    <div class="logo">💎</div>
+    <p>
+      Copie o código abaixo e finalize sua verificação no Discord.
+    </p>
 
-    <div class="title">HYDRA SYSTEM</div>
-    <div class="sub">
-Sua verificação foi concluída com sucesso!<br><br>
- Último passo: utilize o código que o bot enviou no seu privado para finalizar a verificação.
+    <div class="code-box">
+      <input type="text" id="codigo" value="CARREGANDO..." readonly>
+      <button onclick="copiarCodigo()">Copiar</button>
     </div>
 
-    <div class="inner-card">
+    <p class="instrucoes">
+      Após copiar, vá até o Discord e clique em <b>"Adicionar Código"</b>.
+      Só vai funcionar com o código enviado pelo bot.
+    </p>
 
-        <div class="check">✔</div>
+    <a href="https://discord.com" class="btn">Voltar ao Discord</a>
+  </div>
 
-        <div class="inner-title">Conta Verificada</div>
+  <script>
+    // pega código da URL
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
 
-        <div class="inner-desc">
-            Parabéns! Sua conta foi verificada com sucesso.<br>
-            Agora você tem acesso completo ao servidor Hydra no Discord.
-        </div>
+    const campo = document.getElementById("codigo");
 
-    </div>
+    if (code) {
+      campo.value = code;
+    } else {
+      campo.value = "SEM-CODIGO";
+    }
 
-    <button class="btn" onclick="voltarDiscord()">
-        🔗 Voltar ao Discord
-    </button>
+    function copiarCodigo() {
+      const input = document.getElementById("codigo");
+      input.select();
+      input.setSelectionRange(0, 99999);
 
-    <div class="features">
-        <div class="box">🔒 Segurança</div>
-        <div class="box">🚀 Rápido</div>
-    </div>
+      navigator.clipboard.writeText(input.value);
 
-    <div class="footer">
-        © 2026 HYDRA SYSTEM. Todos os direitos reservados.
-    </div>
-
-</div>
-
-<script>
-function voltarDiscord() {
-    window.location.href = "https://discord.com";
-}
-</script>
+      alert("Código copiado!");
+    }
+  </script>
 
 </body>
 </html>
