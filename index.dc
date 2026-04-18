@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Verificação Discord</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0b1f3a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 550px;
+  padding: 45px;
+  border-radius: 22px;
+  background: rgba(10, 20, 40, 0.75);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 50px rgba(0, 140, 255, 0.25);
+  text-align: center;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+
+.code-box {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.code-box input {
+  flex: 1;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.copy-btn {
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(45deg, #5b6cff, #7a88ff);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.copy-btn:hover {
+  transform: scale(1.05);
+}
+
+.desc {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.main-btn {
+  margin-top: 25px;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(45deg, #5b6cff, #7a88ff);
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  display: block;
+  transition: 0.2s;
+}
+
+.main-btn:hover {
+  transform: scale(1.04);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="card">
+  <h1>🔐 Verificação Discord</h1>
+  <div class="subtitle">
+    Copie o código abaixo e finalize sua verificação no Discord.
+  </div>
+
+  <div class="code-box">
+    <input type="text" id="codigo" readonly>
+    <button class="copy-btn" id="copyBtn" onclick="copiarCodigo()">Copiar</button>
+  </div>
+
+  <div class="desc">
+    Após copiar, abra o Discord, clique em <b>"Adicionar Código"</b>  
+    e cole o código enviado pelo bot para concluir sua verificação.
+  </div>
+
+  <a href="https://discord.com" class="main-btn">
+    Voltar ao Discord
+  </a>
+</div>
+
+<script>
+// GERAR CODIGO
+const params = new URLSearchParams(window.location.search);
+let code = params.get("code");
+
+function gerarCodigo() {
+  const numero = Math.floor(1000 + Math.random() * 9000);
+  return "Hydra-Verify-" + numero;
+}
+
+const campo = document.getElementById("codigo");
+
+campo.value = code ? code : gerarCodigo();
+
+// COPIAR SEM ALERT
+function copiarCodigo() {
+  const btn = document.getElementById("copyBtn");
+
+  navigator.clipboard.writeText(campo.value);
+
+  btn.textContent = "Copiado ✔";
+  btn.style.background = "#22c55e";
+
+  setTimeout(() => {
+    btn.textContent = "Copiar";
+    btn.style.background = "linear-gradient(45deg, #5b6cff, #7a88ff)";
+  }, 2000);
+}
+
+/* FUNDO MOLÉCULAS */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 70; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < particles.length; i++) {
+    let p = particles[i];
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(100,180,255,0.8)";
+    ctx.fill();
+
+    for (let j = i + 1; j < particles.length; j++) {
+      let p2 = particles[j];
+      let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+
+      if (dist < 140) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = "rgba(100,180,255,0.15)";
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
