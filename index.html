@@ -17,7 +17,6 @@ body {
   color: white;
 }
 
-/* FUNDO */
 canvas {
   position: absolute;
   width: 100%;
@@ -25,7 +24,6 @@ canvas {
   z-index: 0;
 }
 
-/* CARD */
 .card {
   position: relative;
   z-index: 2;
@@ -37,12 +35,6 @@ canvas {
   backdrop-filter: blur(18px);
   box-shadow: 0 0 50px rgba(0, 140, 255, 0.25);
   text-align: center;
-  animation: fade 0.5s ease;
-}
-
-@keyframes fade {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
@@ -56,7 +48,6 @@ h1 {
   margin-bottom: 25px;
 }
 
-/* CAIXA DO CÓDIGO */
 .code-box {
   display: flex;
   gap: 10px;
@@ -67,14 +58,14 @@ h1 {
   flex: 1;
   padding: 16px;
   border-radius: 14px;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.1);
   font-size: 17px;
   font-weight: bold;
   text-align: center;
-  background: #e5e5e5;
+  background: rgba(255,255,255,0.05);
+  color: white;
 }
 
-/* BOTÃO COPIAR */
 .copy-btn {
   padding: 16px;
   border: none;
@@ -90,7 +81,6 @@ h1 {
   transform: scale(1.05);
 }
 
-/* TEXTO */
 .desc {
   font-size: 15px;
   opacity: 0.85;
@@ -98,7 +88,6 @@ h1 {
   line-height: 1.5;
 }
 
-/* BOTÃO FINAL */
 .main-btn {
   margin-top: 25px;
   padding: 18px;
@@ -128,8 +117,8 @@ h1 {
   </div>
 
   <div class="code-box">
-    <input type="text" id="codigo" value="CARREGANDO..." readonly>
-    <button class="copy-btn" onclick="copiarCodigo()">Copiar</button>
+    <input type="text" id="codigo" readonly>
+    <button class="copy-btn" id="copyBtn" onclick="copiarCodigo()">Copiar</button>
   </div>
 
   <div class="desc">
@@ -143,20 +132,35 @@ h1 {
 </div>
 
 <script>
-// PEGAR CODIGO
+// GERAR CODIGO
 const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
-const campo = document.getElementById("codigo");
+let code = params.get("code");
 
-campo.value = code ? code : "SEM-CODIGO";
-
-// COPIAR
-function copiarCodigo() {
-  navigator.clipboard.writeText(campo.value);
-  alert("Código copiado!");
+function gerarCodigo() {
+  const numero = Math.floor(1000 + Math.random() * 9000);
+  return "Hydra-Verify-" + numero;
 }
 
-/* FUNDO MOLÉCULAS SUAVE */
+const campo = document.getElementById("codigo");
+
+campo.value = code ? code : gerarCodigo();
+
+// COPIAR SEM ALERT
+function copiarCodigo() {
+  const btn = document.getElementById("copyBtn");
+
+  navigator.clipboard.writeText(campo.value);
+
+  btn.textContent = "Copiado ✔";
+  btn.style.background = "#22c55e";
+
+  setTimeout(() => {
+    btn.textContent = "Copiar";
+    btn.style.background = "linear-gradient(45deg, #5b6cff, #7a88ff)";
+  }, 2000);
+}
+
+/* FUNDO MOLÉCULAS */
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
@@ -210,7 +214,6 @@ function animate() {
 
 animate();
 
-// RESPONSIVO
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
