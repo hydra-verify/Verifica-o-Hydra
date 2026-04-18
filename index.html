@@ -2,172 +2,219 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Hydra Verificação</title>
+<title>Verificação Discord</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0b1f3a, #020617);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   color: white;
 }
 
-/* FUNDO ANIMADO */
-body::before {
-  content: "";
+/* FUNDO */
+canvas {
   position: absolute;
-  width: 200%;
-  height: 200%;
-  background: repeating-linear-gradient(
-    45deg,
-    #300000,
-    #300000 20px,
-    #1a0000 20px,
-    #1a0000 40px
-  );
-  animation: moveBg 6s linear infinite;
-  z-index: -1;
-}
-
-@keyframes moveBg {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-100px, -100px); }
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 /* CARD */
 .card {
-  background: #0b1220;
-  padding: 35px;
-  border-radius: 18px;
-  width: 380px;
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 550px;
+  padding: 45px;
+  border-radius: 22px;
+  background: rgba(10, 20, 40, 0.75);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 50px rgba(0, 140, 255, 0.25);
   text-align: center;
-  box-shadow: 0 0 30px rgba(0,0,0,0.8);
-  animation: aparecer 0.6s ease;
+  animation: fade 0.5s ease;
 }
 
-@keyframes aparecer {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+@keyframes fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-h2 {
-  margin-bottom: 10px;
-  font-size: 22px;
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
 }
 
-p {
-  font-size: 14px;
-  opacity: 0.9;
+.subtitle {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 25px;
 }
 
 /* CAIXA DO CÓDIGO */
 .code-box {
   display: flex;
-  margin: 18px 0;
   gap: 10px;
+  margin: 20px 0;
 }
 
 .code-box input {
   flex: 1;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: 14px;
   border: none;
-  text-align: center;
+  font-size: 17px;
   font-weight: bold;
-  font-size: 15px;
+  text-align: center;
+  background: #e5e5e5;
 }
 
 /* BOTÃO COPIAR */
-.code-box button {
-  padding: 12px;
+.copy-btn {
+  padding: 16px;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(45deg, #5865F2, #7a84ff);
+  border-radius: 14px;
+  background: linear-gradient(45deg, #5b6cff, #7a88ff);
   color: white;
+  font-size: 14px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.code-box button:hover {
-  transform: scale(1.05);
-}
-
-/* BOTÃO DISCORD */
-.btn {
-  display: block;
-  margin-top: 18px;
-  padding: 14px;
-  background: linear-gradient(45deg, #5865F2, #7a84ff);
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.btn:hover {
+.copy-btn:hover {
   transform: scale(1.05);
 }
 
 /* TEXTO */
-.instrucoes {
-  font-size: 13px;
+.desc {
+  font-size: 15px;
+  opacity: 0.85;
   margin-top: 10px;
-  opacity: 0.8;
+  line-height: 1.5;
+}
+
+/* BOTÃO FINAL */
+.main-btn {
+  margin-top: 25px;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(45deg, #5b6cff, #7a88ff);
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  display: block;
+  transition: 0.2s;
+}
+
+.main-btn:hover {
+  transform: scale(1.04);
 }
 </style>
-
 </head>
+
 <body>
 
-<div class="card">
-  <h2>🔐 Verificação Discord</h2>
+<canvas id="bg"></canvas>
 
-  <p>Copie o código abaixo e finalize no Discord.</p>
+<div class="card">
+  <h1>🔐 Verificação Discord</h1>
+  <div class="subtitle">
+    Copie o código abaixo e finalize sua verificação no Discord.
+  </div>
 
   <div class="code-box">
     <input type="text" id="codigo" value="CARREGANDO..." readonly>
-    <button onclick="copiarCodigo()">Copiar</button>
+    <button class="copy-btn" onclick="copiarCodigo()">Copiar</button>
   </div>
 
-  <p class="instrucoes">
-    Depois vá no Discord e clique em <b>"Adicionar Código"</b>.
-  </p>
+  <div class="desc">
+    Após copiar, abra o Discord, clique em <b>"Adicionar Código"</b>  
+    e cole o código enviado pelo bot para concluir sua verificação.
+  </div>
 
-  <a href="https://discord.com" class="btn">Voltar ao Discord</a>
+  <a href="https://discord.com" class="main-btn">
+    Voltar ao Discord
+  </a>
 </div>
 
 <script>
+// PEGAR CODIGO
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-
 const campo = document.getElementById("codigo");
 
-if (code) {
-  campo.value = code;
-} else {
-  campo.value = "SEM-CODIGO";
-}
+campo.value = code ? code : "SEM-CODIGO";
 
+// COPIAR
 function copiarCodigo() {
-  const input = document.getElementById("codigo");
-  input.select();
-  input.setSelectionRange(0, 99999);
-
-  navigator.clipboard.writeText(input.value);
-
+  navigator.clipboard.writeText(campo.value);
   alert("Código copiado!");
 }
+
+/* FUNDO MOLÉCULAS SUAVE */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 70; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < particles.length; i++) {
+    let p = particles[i];
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(100,180,255,0.8)";
+    ctx.fill();
+
+    for (let j = i + 1; j < particles.length; j++) {
+      let p2 = particles[j];
+      let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+
+      if (dist < 140) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = "rgba(100,180,255,0.15)";
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// RESPONSIVO
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 </script>
 
 </body>
