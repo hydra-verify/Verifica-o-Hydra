@@ -1,132 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Hydra Verificação</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1a0000, #300000);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
-    }
+<meta charset="UTF-8">
+<title>Hydra Verificação</title>
 
-    .card {
-      background: #0b1220;
-      padding: 25px;
-      border-radius: 15px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: white;
+}
 
-    h2 {
-      margin-bottom: 10px;
-    }
+/* FUNDO ANIMADO */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    #300000,
+    #300000 20px,
+    #1a0000 20px,
+    #1a0000 40px
+  );
+  animation: moveBg 6s linear infinite;
+  z-index: -1;
+}
 
-    p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
+@keyframes moveBg {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, -100px); }
+}
 
-    .code-box {
-      display: flex;
-      margin: 15px 0;
-      gap: 8px;
-    }
+/* CARD */
+.card {
+  background: #0b1220;
+  padding: 35px;
+  border-radius: 18px;
+  width: 380px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  animation: aparecer 0.6s ease;
+}
 
-    .code-box input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      text-align: center;
-      font-weight: bold;
-    }
+@keyframes aparecer {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
-    .code-box button {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #5865F2;
-      color: white;
-      cursor: pointer;
-    }
+h2 {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
 
-    .code-box button:hover {
-      background: #4752c4;
-    }
+p {
+  font-size: 14px;
+  opacity: 0.9;
+}
 
-    .btn {
-      display: block;
-      margin-top: 15px;
-      padding: 12px;
-      background: #5865F2;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-    }
+/* CAIXA DO CÓDIGO */
+.code-box {
+  display: flex;
+  margin: 18px 0;
+  gap: 10px;
+}
 
-    .btn:hover {
-      background: #4752c4;
-    }
+.code-box input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+}
 
-    .instrucoes {
-      font-size: 13px;
-      margin-top: 10px;
-      opacity: 0.8;
-    }
-  </style>
+/* BOTÃO COPIAR */
+.code-box button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #5865F2, #7a84ff);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.code-box button:hover {
+  transform: scale(1.05);
+}
+
+/* BOTÃO DISCORD */
+.btn {
+  display: block;
+  margin-top: 18px;
+  padding: 14px;
+  background: linear-gradient(45deg, #5865F2, #7a84ff);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* TEXTO */
+.instrucoes {
+  font-size: 13px;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+</style>
+
 </head>
 <body>
 
-  <div class="card">
-    <h2>🔐 Verificação Discord</h2>
+<div class="card">
+  <h2>🔐 Verificação Discord</h2>
 
-    <p>
-      Copie o código abaixo e finalize sua verificação no Discord.
-    </p>
+  <p>Copie o código abaixo e finalize no Discord.</p>
 
-    <div class="code-box">
-      <input type="text" id="codigo" value="CARREGANDO..." readonly>
-      <button onclick="copiarCodigo()">Copiar</button>
-    </div>
-
-    <p class="instrucoes">
-      Após copiar, vá até o Discord e clique em <b>"Adicionar Código"</b>.
-      Só vai funcionar com o código enviado pelo bot.
-    </p>
-
-    <a href="https://discord.com" class="btn">Voltar ao Discord</a>
+  <div class="code-box">
+    <input type="text" id="codigo" value="CARREGANDO..." readonly>
+    <button onclick="copiarCodigo()">Copiar</button>
   </div>
 
-  <script>
-    // pega código da URL
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+  <p class="instrucoes">
+    Depois vá no Discord e clique em <b>"Adicionar Código"</b>.
+  </p>
 
-    const campo = document.getElementById("codigo");
+  <a href="https://discord.com" class="btn">Voltar ao Discord</a>
+</div>
 
-    if (code) {
-      campo.value = code;
-    } else {
-      campo.value = "SEM-CODIGO";
-    }
+<script>
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
-    function copiarCodigo() {
-      const input = document.getElementById("codigo");
-      input.select();
-      input.setSelectionRange(0, 99999);
+const campo = document.getElementById("codigo");
 
-      navigator.clipboard.writeText(input.value);
+if (code) {
+  campo.value = code;
+} else {
+  campo.value = "SEM-CODIGO";
+}
 
-      alert("Código copiado!");
-    }
-  </script>
+function copiarCodigo() {
+  const input = document.getElementById("codigo");
+  input.select();
+  input.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(input.value);
+
+  alert("Código copiado!");
+}
+</script>
 
 </body>
 </html>
